@@ -7,7 +7,7 @@ Route::get('/', function () {
 });
 
 Route::get('/listmahasiswa', function () {
-    return view('mahasiswa.index');
+    return view('table-mahasiswa');
 });
 
 // Route::get('/kemahasiswaan', [KemahasiswaanController::class, 'index'])->name('kemahasiswaan');
@@ -25,7 +25,7 @@ Route::get('/profile', function () {
 });
 
 Route::get('/admin', function () {
-    return view('components.admin');
+    return view('admin.admin-dashboart');
 });
 
 Route::get('/login', function () {
