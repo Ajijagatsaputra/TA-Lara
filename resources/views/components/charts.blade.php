@@ -1,6 +1,6 @@
 <!-- Dashboard Statistik -->
 <div class="container">
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mt-4 mb-4">
     <!-- Statistik Kelulusan Mahasiswa -->
     <div class="col-lg-6 col-md-8 mb-4">
       <div class="block block-rounded mx-auto">
