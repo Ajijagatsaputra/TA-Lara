@@ -19,9 +19,9 @@
     <meta property="og:image" content="">
 
     <!-- Icons -->
-    <link rel="shortcut icon" href="assets/media/favicons/favicon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/favicon-192x192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/media/favicons/apple-touch-icon-180x180.png">
+    <link rel="shortcut icon" href="assets/media/favicons/logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/media/favicons/logo.png">
     <!-- END Icons -->
 
     <!-- Stylesheets -->
@@ -106,7 +106,7 @@
                 </div>
                 <div role="separator" class="dropdown-divider m-0"></div>
                 <div class="p-2">
-                  <a class="dropdown-item d-flex align-items-center justify-content-between" href="op_auth_signin.html">
+                  <a class="dropdown-item d-flex align-items-center justify-content-between" href="login">
                     <span class="fs-sm fw-medium">Log Out</span>
                   </a>
                 </div>
@@ -123,7 +123,6 @@
           <div class="content-header">
             <form class="w-100" action="bd_search.html" method="POST">
               <div class="input-group">
-                <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
                 <button type="button" class="btn btn-alt-danger" data-toggle="layout" data-action="header_search_off">
                   <i class="fa fa-fw fa-times-circle"></i>
                 </button>

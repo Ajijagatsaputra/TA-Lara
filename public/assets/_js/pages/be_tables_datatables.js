@@ -45,10 +45,15 @@ class pageTablesDatatables {
 
     // Init full DataTable
     jQuery('.js-dataTable-full').DataTable({
-      pageLength: 10,
+      paging: true,
+      searching: true,
+      ordering: true,
+      responsive: true,
+      pageLength: 5,
       lengthMenu: [[5, 10, 15, 20], [5, 10, 15, 20]],
       autoWidth: false
     });
+    
 
     // Init full extra DataTable
     jQuery('.js-dataTable-full-pagination').DataTable({
