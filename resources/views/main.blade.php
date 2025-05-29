@@ -4,6 +4,6 @@
     <main class="main">
         @include('components.navbar')   
         @include('components.stats')
-        @include('components.charts-LP')
+        @include('components.charts')
     </main>
 @endsection

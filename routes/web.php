@@ -7,7 +7,19 @@ Route::get('/', function () {
 });
 
 Route::get('/listmahasiswa', function () {
-    return view('mahasiswa.index');
+    return view('admin.table-mahasiswa');
+});
+
+Route::get('/listdosen', function () {
+    return view('dosen.table-dosen');
+});
+
+Route::get('/listtraceralumni', function () {
+    return view('tracer.table-salinan-alumni');
+});
+
+Route::get('/listtracerpengguna', function () {
+    return view('tracer.table-salinan-pengguna');
 });
 
 // Route::get('/kemahasiswaan', [KemahasiswaanController::class, 'index'])->name('kemahasiswaan');
@@ -25,12 +37,9 @@ Route::get('/profile', function () {
 });
 
 Route::get('/admin', function () {
-    return view('components.admin');
+    return view('admin.admin-dashboard');
 });
 
 Route::get('/login', function () {
     return view('login');
 });
-
-
-
