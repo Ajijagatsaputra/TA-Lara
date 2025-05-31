@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login | SIKEMA - Politeknik Harapan Bersama</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/logo.png">
+
     <style>
         body,
         html {
@@ -60,12 +62,23 @@
                     <h6 class="mb-3 fw-bold">Politeknik Harapan Bersama</h6>
                     <p class="text-muted mb-4">Akses ke seluruh layanan akademik kampus dengan mudah dan cepat.</p>
 
-                    <form>
+                    <!-- Session Status -->
+                    @if (session('status'))
+                        <div class="alert alert-success mb-4" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login') }}">
+
+                        @csrf
+
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Username" required>
+                            <input type="text" class="form-control" placeholder="Email" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                name="password" required">
                         </div>
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="showPassword">

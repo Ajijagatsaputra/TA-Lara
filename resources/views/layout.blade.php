@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+  <head id="page-header" class="sticky-top bg-body">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
@@ -39,7 +39,7 @@
           <!-- Left Section -->
           <div class="d-flex align-items-center">
             <!-- Logo -->
-            <a class="fw-semibold fs-5 tracking-wider text-dual me-3" href="index.html"> SIKEMA<span class="fw-normal">TI</span> </a>
+            <a class="fw-semibold fs-5 tracking-wider text-dual me-3" href="/"> SIKEMA<span class="fw-normal">TI</span> </a>
             <!-- END Logo -->
 
             <!-- Notifications Dropdown -->
@@ -86,14 +86,14 @@
             <div class="dropdown d-inline-block ms-2">
               <button type="button" class="btn btn-sm btn-alt-secondary" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="rounded" src="assets/media/avatars/avatar10.jpg" alt="Header Avatar" style="width: 21px;" />
-                <span class="d-none d-sm-inline-block ms-1">Sihur</span>
+                <span class="d-none d-sm-inline-block ms-1">{{ Auth::user()->username }}</span>
                 <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block"></i>
               </button>
               <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0 border-0" aria-labelledby="page-header-user-dropdown">
                 <div class="p-3 text-center text-white bg-dark border-bottom rounded-top">
                   <img class="img-avatar img-avatar48 img-avatar-thumb" src="assets/media/avatars/avatar10.jpg" alt="">
-                  <p class="mt-2 mb-0 fw-medium">Sihur Smith</p>
-                  <p class="mb-0 text-muted fs-sm fw-medium">25090047</p>
+                  <p class="mt-2 mb-0 fw-medium">{{ Auth::user()->username }}</p>
+                  <p class="mb-0 text-muted fs-sm fw-medium">{{ Auth::user()->role }}</p>
                 </div>
                 <div class="p-2">
                   <a class="dropdown-item d-flex align-items-center justify-content-between" href="/profile">
