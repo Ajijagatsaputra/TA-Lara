@@ -58,17 +58,13 @@
                                 <div class="mb-4">
                                     <label class="form-label" for="username">Username</label>
                                     <input type="text" class="form-control" id="username" name="username"
-                                        placeholder="Enter your username" value="john.parker">
+                                        placeholder="Enter your username" value= {{Auth::user()->username}}>
                                 </div>
-                                <div class="mb-4">
-                                    <label class="form-label" for="name">Full Name</label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        placeholder="Enter your full name" value="John Parker">
-                                </div>
+                               
                                 <div class="mb-4">
                                     <label class="form-label" for="email">Email Address</label>
                                     <input type="email" class="form-control" id="email" name="email"
-                                        placeholder="Enter your email address" value="john.parker@example.com">
+                                        placeholder="Enter your email address" value={{Auth::user()->email}}>
                                 </div>
                                 <div class="mb-4">
                                     <button type="submit" class="btn btn-primary w-100">

@@ -1,98 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SIKEMA</title>
-
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | SIKEMA - Politeknik Harapan Bersama</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/logo.png">
 
     <style>
-        .divider:after,
-        .divider:before {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #eee;
+        body,
+        html {
+            height: 100%;
+            margin: 0;
         }
 
-        .btn-block {
-            width: 100%;
-        }
-
-        body {
+        .illustration {
             background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .illustration img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+        }
+
+        @media (max-width: 767.98px) {
+            .illustration {
+                display: none !important;
+            }
+
+            .login-box {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <section class="vh-100">
-        <div class="container py-5 h-100">
-            <div class="row d-flex align-items-center justify-content-center h-100">
-                <div class="col-md-8 col-lg-7 col-xl-6 mb-4 mb-md-0">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                        class="img-fluid" alt="Phone image" />
-                </div>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- LEFT Illustration (Hidden on mobile) -->
+            <div class="col-md-6 illustration d-none d-md-flex">
+                <img src="assets/media/favicons/logo-sikema.png" alt="Logo SIKEMA">
+            </div>
 
-                <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                    <form id="loginForm" novalidate>
+            <!-- RIGHT Login Form -->
+            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                <div class="login-box">
+                    <h5 class="fw-bold mb-1">Sistem Informasi Kemahasiswaan</h5>
+                    <h6 class="mb-3 fw-bold">Politeknik Harapan Bersama</h6>
+                    <p class="text-muted mb-4">Akses ke seluruh layanan akademik kampus dengan mudah dan cepat.</p>
 
-                        <!-- Email input -->
-                        <div class="form-outline mb-4">
-                            <input type="email" id="email" class="form-control form-control-lg"
-                                placeholder="Email address" required />
-                            <label class="form-label mt-1" for="email">Email address</label>
+                    <!-- Session Status -->
+                    @if (session('status'))
+                        <div class="alert alert-success mb-4" role="alert">
+                            {{ session('status') }}
                         </div>
+                    @endif
 
-                        <!-- Password input -->
-                        <div class="form-outline mb-4">
-                            <input type="password" id="password" class="form-control form-control-lg"
-                                placeholder="Password" required />
-                            <label class="form-label mt-1" for="password">Password</label>
+                    <form method="POST" action="{{ route('login') }}">
+
+                        @csrf
+
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Email" name="email" required>
                         </div>
-
-                        <!-- Checkbox & Forgot Password -->
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="rememberMe"
-                                    checked />
-                                <label class="form-check-label" for="rememberMe">Remember me</label>
-                            </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                name="password" required">
                         </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="showPassword">
+                            <label class="form-check-label" for="showPassword">Tampilkan Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100">Login</button>
                     </form>
+
+                    <small class="d-block text-muted mt-3">Lupa password? <a href="#">Reset sandi</a></small>
+                    <small class="d-block text-muted mt-2">© 2025 | Politeknik Harapan Bersama - Sisofo360</small>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
 
     <script>
-        document.getElementById("loginForm").addEventListener("submit", function(e) {
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value.trim();
-
-            if (!email || !/\S+@\S+\.\S+/.test(email)) {
-                alert("Please enter a valid email address.");
-                e.preventDefault();
-                return;
-            }
-
-            if (!password || password.length < 6) {
-                alert("Password must be at least 6 characters.");
-                e.preventDefault();
-                return;
-            }
+        document.getElementById("showPassword").addEventListener("change", function() {
+            const passwordField = document.getElementById("password");
+            passwordField.type = this.checked ? "text" : "password";
         });
     </script>
+
 </body>
+
 </html>
