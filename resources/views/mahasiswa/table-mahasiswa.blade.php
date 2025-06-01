@@ -25,7 +25,6 @@
                     </div>
                 </div>
             </div>
-            <!-- End Hero -->
 
             <!-- Page Content -->
             <div class="content">
@@ -36,10 +35,10 @@
                         <div class="mb-3">
                             <label for="filter-tahun" class="form-label fw-semibold">Filter Tahun Angkatan:</label>
                             <select id="filter-tahun" class="form-select w-auto d-inline-block">
-                                <option value="2025" selected>2025</option>
-                                <option value="2024" selected>2024</option>
-                                <option value="2023" selected>2023</option>
-                                <option value="2022" selected>2022</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
                                 <option value="2021" selected>2021</option>
                             </select>
                         </div>
@@ -62,28 +61,67 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
-                        <!-- End Table -->
 
                     </div>
                 </div>
             </div>
-            <!-- End Page Content -->
 
         </main>
 
-        <!-- Footer -->
         @include('components.admin.footer')
+    </div>
+
+    <!-- Modal View Mahasiswa -->
+    <div class="modal fade" id="modalViewMahasiswa" tabindex="-1" aria-labelledby="modalViewMahasiswaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalViewMahasiswaLabel">Detail Mahasiswa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">NIM</dt>
+                        <dd class="col-sm-8" id="view-nim"></dd>
+
+                        <dt class="col-sm-4">Nama Lengkap</dt>
+                        <dd class="col-sm-8" id="view-nama"></dd>
+
+                        <dt class="col-sm-4">Prodi</dt>
+                        <dd class="col-sm-8" id="view-prodi"></dd>
+
+                        <dt class="col-sm-4">Semester</dt>
+                        <dd class="col-sm-8" id="view-semester"></dd>
+
+                        <dt class="col-sm-4">Kelas</dt>
+                        <dd class="col-sm-8" id="view-kelas"></dd>
+
+                        <dt class="col-sm-4">Jalur</dt>
+                        <dd class="col-sm-8" id="view-jalur"></dd>
+
+                        <dt class="col-sm-4">Tahun Masuk</dt>
+                        <dd class="col-sm-8" id="view-tahun"></dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8" id="view-status"></dd>
+
+                        <dt class="col-sm-4">No. Telp</dt>
+                        <dd class="col-sm-8" id="view-telp"></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- JavaScript Libraries -->
     <script src="assets/js/lib/jquery.min.js"></script>
     <script src="assets/js/oneui.app.min.js"></script>
 
-    <!-- DataTables & Export Plugins -->
+    <!-- DataTables & Plugins -->
     <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
     <script src="assets/js/plugins/datatables-buttons/dataTables.buttons.min.js"></script>
@@ -101,11 +139,10 @@
         function initDataTable(tahunAngkatan) {
             if (table) {
                 table.destroy();
-                $('.js-dataTable-full').empty(); // Kosongkan isi sebelum re-inisialisasi
+                $('.js-dataTable-full').empty();
                 $('.js-dataTable-full').html(`
                     <thead class="table-light">
                         <tr>
-                            <th class="text-center" style="width: 50px;">#</th>
                             <th>NIM</th>
                             <th>Nama Mahasiswa</th>
                             <th class="d-none d-sm-table-cell">Prodi</th>
@@ -127,12 +164,7 @@
                 searching: true,
                 ordering: true,
                 responsive: true,
-                autoWidth: false,
                 pageLength: 20,
-                lengthMenu: [
-                    [5, 10, 15, 20],
-                    [5, 10, 15, 20]
-                ],
                 dom: "<'dt-toolbar row mb-3'" +
                     "<'col-12 col-md-6 d-flex align-items-center gap-2'B>" +
                     "<'col-12 col-md-6 text-md-end mt-2 mt-md-0'f>" +
@@ -169,31 +201,33 @@
                 ajax: {
                     url: '{{ route('api.mahasiswa') }}',
                     type: 'GET',
-                    dataType: 'JSON',
                     data: {
                         tahun_angkatan: tahunAngkatan
                     },
                     dataSrc: function(json) {
-                        var return_data = [];
-
-                        if (json.status && json.data && json.data.length) {
-                            $.each(json.data, function(i, item) {
-                                return_data.push({
-                                    'nim': item.nim || '',
-                                    'nama_lengkap': item.nama_lengkap || '',
-                                    'prodi': (item.prodi && item.prodi.nama) || '',
-                                    'semester': item.semester || '',
-                                    'kelas': item.kelas || '',
-                                    'jalur': item.jalur || '',
-                                    'tahun_masuk': item.tahun_masuk || '',
-                                    'status_mahasiswa': item.status_mahasiswa || '',
-                                    'no_whatsapp': item.no_whatsapp || '',
-                                    'aksi': '<button class="btn btn-sm btn-primary">Edit</button>'
-                                });
-                            });
-                        }
-
-                        return return_data;
+                        return (json.status && json.data) ? json.data.map(item => ({
+                            nim: item.nim,
+                            nama_lengkap: item.nama_lengkap,
+                            prodi: item.prodi?.nama || '',
+                            semester: item.semester,
+                            kelas: item.kelas,
+                            jalur: item.jalur,
+                            tahun_masuk: item.tahun_masuk,
+                            status_mahasiswa: item.status_mahasiswa,
+                            no_whatsapp: item.no_whatsapp,
+                            aksi: `<button class="btn btn-sm btn-info btn-view" 
+                                        data-nim="${item.nim}"
+                                        data-nama="${item.nama_lengkap}"
+                                        data-prodi="${item.prodi?.nama || ''}"
+                                        data-semester="${item.semester}"
+                                        data-kelas="${item.kelas}"
+                                        data-jalur="${item.jalur}"
+                                        data-tahun="${item.tahun_masuk}"
+                                        data-status="${item.status_mahasiswa}"
+                                        data-telp="${item.no_whatsapp}">
+                                        View
+                                   </button>`
+                        })) : [];
                     }
                 },
                 columns: [{
@@ -232,13 +266,24 @@
         }
 
         $(document).ready(function() {
-            // Inisialisasi pertama
             initDataTable($('#filter-tahun').val());
 
-            // Ganti tahun
             $('#filter-tahun').on('change', function() {
-                const selectedTahun = $(this).val();
-                initDataTable(selectedTahun);
+                initDataTable($(this).val());
+            });
+
+            // Event delegation for dynamic "View" buttons
+            $(document).on('click', '.btn-view', function() {
+                $('#view-nim').text($(this).data('nim'));
+                $('#view-nama').text($(this).data('nama'));
+                $('#view-prodi').text($(this).data('prodi'));
+                $('#view-semester').text($(this).data('semester'));
+                $('#view-kelas').text($(this).data('kelas'));
+                $('#view-jalur').text($(this).data('jalur'));
+                $('#view-tahun').text($(this).data('tahun'));
+                $('#view-status').text($(this).data('status'));
+                $('#view-telp').text($(this).data('telp'));
+                $('#modalViewMahasiswa').modal('show');
             });
         });
     </script>

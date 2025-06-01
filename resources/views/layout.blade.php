@@ -21,8 +21,7 @@
     <!-- Icons -->
     <link rel="shortcut icon" href="assets/media/favicons/logo.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/media/favicons/logo.png">
-    <!-- END Icons -->
+<link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/logo_phb.png">    <!-- END Icons -->
 
     <!-- Stylesheets -->
     <!-- Fonts and OneUI framework -->
