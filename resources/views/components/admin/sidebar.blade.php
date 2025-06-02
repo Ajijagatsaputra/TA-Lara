@@ -97,7 +97,7 @@
       <div class="content-side">
         <ul class="nav-main">
           <li class="nav-main-item">
-            <a class="nav-main-link" href="dashboard_admin">
+            <a class="nav-main-link" href="admin">
               <i class="nav-main-link-icon si si-speedometer"></i>
               <span class="nav-main-link-name">Dashboard</span>
             </a>
@@ -142,11 +142,16 @@
           <li class="nav-main-item">
             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
               <i class="nav-main-link-icon far fa-newspaper"></i>
-              <span class="nav-main-link-name">KEMAHASISWAAN</span>
+              <span class="nav-main-link-name">PERWALIAN</span>
             </a>
             <ul class="nav-main-submenu">
               <li class="nav-main-item">
-                <a class="nav-main-link" href="be_tables_styles.html">
+                <a class="nav-main-link" href="kelas-perwalian">
+                  <span class="nav-main-link-name">KELAS PERWALIAN</span>
+                </a>
+              </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="krs">
                   <span class="nav-main-link-name">PERSETUJAN KRS</span>
                 </a>
               </li>
