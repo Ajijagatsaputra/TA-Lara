@@ -71,14 +71,14 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
               <div class="flex-grow-1">
                 <h1 class="h3 fw-bold mb-2">
-                  Data Mahasiswa
+                  Data Alumni
                 </h1>
               </div>
               <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                 <div class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3">
                     <span class="d-inline-block">
                       <a class="btn btn-primary px-4 py-2" data-toggle="click-ripple" href="javascript:void(0)">
-                        <i class="fa fa-plus me-1 opacity-50"></i> Mahasiswa
+                        <i class="fa fa-plus me-1 opacity-50"></i> alumni
                       </a>
                     </span>
                   </div>
@@ -93,7 +93,7 @@
           <!-- Dynamic Table with Export Buttons -->
           <div class="block block-rounded">
             <div class="block-header block-header-default">
-              <h3 class="block-title">Data Mahasiswa</h3>
+              <h3 class="block-title">Data Alumni</h3>
             </div>
             <div class="block-content block-content-full">
               <!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->

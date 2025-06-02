@@ -51,11 +51,34 @@
                        </ul>
                    </li>
                    <li class="nav-main-item">
-                       <a class="nav-main-link" href="be_pages_dashboard.html">
-                           <i class="nav-main-link-icon fa fa-chalkboard-teacher"></i>
-                           <span class="nav-main-link-name">Perwalian</span>
-                       </a>
-                   </li>
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                        aria-expanded="false" href="#">
+                        <i class="nav-main-link-icon fa fa-user-graduate"></i>
+                        <span class="nav-main-link-name">Perwalian</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="/kuesioner">
+                                <span class="nav-main-link-name">PERSETUJAN KRS</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="/kuesioner-pengguna">
+                                <span class="nav-main-link-name">KEAKTIFAN MAHASISWA</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="/kuesioner">
+                                <span class="nav-main-link-name">MONITORING IPK</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="/kuesioner-pengguna">
+                                <span class="nav-main-link-name">BIMBINGAN PRASIDANG</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                </ul>
            </div>
            <!-- END Main Navigation -->
