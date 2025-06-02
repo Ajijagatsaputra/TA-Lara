@@ -74,12 +74,16 @@
                         @csrf
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Email" name="email" required>
+                            <input type="text" class="form-control" placeholder="Email" name="email" id="email"
+                                required>
+                            <div class="invalid-feedback">Mohon masukkan email yang valid.</div>
                         </div>
                         <div class="mb-3">
-                            <input type="password" class="form-control" id="password" placeholder="Password"
-                                name="password" required">
+                            <input type="password" class="form-control" placeholder="Password" name="password"
+                                id="password" required>
+                            <div class="invalid-feedback">Password minimal 6 karakter.</div>
                         </div>
+
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="showPassword">
                             <label class="form-check-label" for="showPassword">Tampilkan Password</label>
@@ -87,7 +91,7 @@
                         <button type="submit" class="btn btn-dark w-100">Login</button>
                     </form>
 
-                    <small class="d-block text-muted mt-3">Lupa password? <a href="#">Reset sandi</a></small>
+                    <small class="d-block text-muted mt-3">Belum punya akun? <a href="/register">RegistrasiAkun</a></small>
                     <small class="d-block text-muted mt-2">© 2025 | Politeknik Harapan Bersama - Sisofo360</small>
                 </div>
             </div>
@@ -95,11 +99,40 @@
     </div>
 
     <script>
-        document.getElementById("showPassword").addEventListener("change", function() {
-            const passwordField = document.getElementById("password");
-            passwordField.type = this.checked ? "text" : "password";
+        document.querySelector("form").addEventListener("submit", function(e) {
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let isValid = true;
+
+            // Email validation
+            if (!email || !emailRegex.test(email)) {
+                emailInput.classList.add("is-invalid");
+                isValid = false;
+            } else {
+                emailInput.classList.remove("is-invalid");
+                emailInput.classList.add("is-valid");
+            }
+
+            // Password validation
+            if (!password || password.length < 6) {
+                passwordInput.classList.add("is-invalid");
+                isValid = false;
+            } else {
+                passwordInput.classList.remove("is-invalid");
+                passwordInput.classList.add("is-valid");
+            }
+
+            // Prevent form submit if not valid
+            if (!isValid) {
+                e.preventDefault();
+            }
         });
     </script>
+
 
 </body>
 

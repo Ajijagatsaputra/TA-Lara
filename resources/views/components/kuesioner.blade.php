@@ -224,7 +224,8 @@
                         <small class="text-muted">Progress: <span id="progressText">0%</span></small>
                     </div>
 
-                    <form id="alumniForm" action="#" method="POST">
+                    <form id="alumniForm" action="{{ route('tracer.store') }}" method="POST">
+                        @csrf
                         <!-- Informasi Pribadi -->
                         <div class="section-card animate-fade-in">
                             <div class="section-header">
@@ -239,14 +240,14 @@
                                             Nama Lengkap
                                         </label>
                                         <input type="text" name="nama" class="form-control"
-                                            placeholder="Masukkan nama lengkap" required>
+                                            placeholder="Masukkan nama lengkap" value="{{ $alumni->nama_lengkap ?? '' }}"  required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">
                                             <i class="fas fa-phone text-primary"></i>
                                             Nomor HP/Whatsapp
                                         </label>
-                                        <input type="text" name="nim" class="form-control" placeholder="+62"
+                                        <input type="text" name="no_hp" class="form-control" value="{{ $alumni->no_hp ?? '' }}" placeholder="+62"
                                             required>
                                     </div>
                                     <div class="col-md-6">
@@ -255,14 +256,14 @@
                                             Email
                                         </label>
                                         <input type="email" name="email" class="form-control"
-                                            placeholder="contoh@email.com" required>
+                                           value="{{ $alumni->users->email ?? '' }}" placeholder="contoh@email.com" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">
                                             <i class="fas fa-calendar text-primary"></i>
                                             Tahun Lulus
                                         </label>
-                                        <input type="number" name="tahun_lulus" class="form-control" placeholder="2023"
+                                        <input type="number" name="tahun_lulus" class="form-control" value="{{ $alumni->tahun_lulus ?? '' }}" placeholder="2023"
                                             min="2000" max="2024" required>
                                     </div>
                                     <div class="col-md-6">
@@ -270,7 +271,7 @@
                                             <i class="fas fa-map-marker-alt text-primary"></i> Alamat Lengkap
                                         </label>
                                         <input type="alamat" name="alamat" class="form-control"
-                                            placeholder="Desa, Kecamatan, Kabupaten" required>
+                                         value="{{ $alumni->alamat ?? '' }}"   placeholder="Desa, Kecamatan, Kabupaten" required>
                                     </div>
                                 </div>
                             </div>
@@ -337,7 +338,7 @@
                                             <i class="fas fa-map-marker-alt text-primary"></i>
                                             Lokasi Pekerjaan
                                         </label>
-                                        <input type="text" name="lokasi" class="form-control"
+                                        <input type="text" name="alamat_pekerjaan" class="form-control"
                                             placeholder="Jakarta, Indonesia">
                                     </div>
                                     <div class="col-md-6">
@@ -447,37 +448,7 @@
             document.addEventListener('change', updateProgress);
 
             // Form submission
-            document.getElementById('alumniForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Simple validation
-                const requiredFields = this.querySelectorAll('[required]');
-                let isValid = true;
-
-                requiredFields.forEach(field => {
-                    if (!field.value.trim() && field.type !== 'radio') {
-                        isValid = false;
-                        field.classList.add('is-invalid');
-                    } else if (field.type === 'radio') {
-                        const radioGroup = this.querySelectorAll(`input[name="${field.name}"]`);
-                        const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-                        if (!isChecked) {
-                            isValid = false;
-                        }
-                    } else {
-                        field.classList.remove('is-invalid');
-                    }
-                });
-
-                if (isValid) {
-                    // Show success message
-                    alert('✅ Kuesioner berhasil dikirim! Terima kasih atas partisipasi Anda.');
-                    // Here you would normally submit the form data to your server
-                    // this.submit();
-                } else {
-                    alert('❌ Mohon lengkapi semua field yang wajib diisi.');
-                }
-            });
+            
 
             // Initialize progress
             updateProgress();

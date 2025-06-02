@@ -112,7 +112,7 @@
                     dataType: 'json',
                     data: {
                         key: '53fd8f6e-fb0b-4616-8a52-83619dfefa03',
-                        kode_tahun_akademik: '12456789'
+                        kode_tahun_akademik: '2024/2025 - Ganjil'
                     },
                     dataSrc: function(json) {
                         var return_data = [];
