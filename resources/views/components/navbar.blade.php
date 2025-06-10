@@ -1,5 +1,5 @@
    <!-- Navigation Bar-->
-   <div class="bg-primary-darker">
+   <div class="bg-primary-darker sticky-top" style="z-index : 1030;">
        <div class="content py-3 container">
            <!-- Toggle Main Navigation -->
            <div class="d-lg-none">
@@ -27,7 +27,7 @@
                        <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                            aria-expanded="false" href="#">
                            <i class="nav-main-link-icon fa fa-user-graduate"></i>
-                           <span class="nav-main-link-name">Kemahasiswaan</span>
+                           <span class="nav-main-link-name">Tracer Study</span>
                        </a>
                        <ul class="nav-main-submenu">
                            <li class="nav-main-item">
@@ -50,12 +50,14 @@
                            </li>
                        </ul>
                    </li>
+                   @if (!Auth::user()->role === 'alumni')
                    <li class="nav-main-item">
                        <a class="nav-main-link" href="be_pages_dashboard.html">
                            <i class="nav-main-link-icon fa fa-chalkboard-teacher"></i>
                            <span class="nav-main-link-name">Perwalian</span>
                        </a>
                    </li>
+                   @endif
                </ul>
            </div>
            <!-- END Main Navigation -->

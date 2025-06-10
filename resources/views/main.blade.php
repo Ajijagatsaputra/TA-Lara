@@ -3,7 +3,6 @@
 @section('content')
     <main class="main">
         @include('components.navbar')   
-        @include('components.stats')
-        @include('components.charts')
+        @include('components.card-main')
     </main>
 @endsection
