@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\KuesionerAlumni;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\TracerAlumniController;
+use App\Http\Controllers\TracerStudyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -49,10 +50,11 @@ Route::get('/listtracerpengguna', function () {
 
 Route::get('/kuesioner', [KuesionerAlumni::class, 'index'])->name('tracer.kuesioner');
 Route::post('/kuesioner/store', [KuesionerAlumni::class, 'store'])->name('tracer.store');
+Route::resource('kuesioner-pengguna', TracerStudyController::class);
 
-Route::get('/kuesioner-pengguna', function () {
-    return view('components.kuesioner-pengguna');
-});
+// Route::get('/kuesioner-pengguna', function () {
+//     return view('components.kuesioner-pengguna');
+// });
 
 Route::get('/profile', function () {
     return view('components.profile');
