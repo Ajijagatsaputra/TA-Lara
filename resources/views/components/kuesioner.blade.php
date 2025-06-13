@@ -448,7 +448,7 @@
             document.addEventListener('change', updateProgress);
 
             // Form submission
-            
+
 
             // Initialize progress
             updateProgress();

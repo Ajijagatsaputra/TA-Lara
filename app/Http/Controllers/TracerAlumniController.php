@@ -9,35 +9,39 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TracerAlumniController extends Controller
 {
-
+    // Menampilkan halaman dengan DataTables
     public function index()
     {
         if (request()->ajax()) {
-            $tracer = TracerStudy::with('alumni.mahasiswa')->get();
-            // dd($tracer);
+            // Ambil data tracer study beserta relasi alumni dan users
+            $tracer = TracerStudy::with('alumni.users')->get();
+
             return DataTables::of($tracer)
-                ->addColumn('action', function ($tracer) {
-                    return '<div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $tracer->id . '" data-original-title="Edit" class="edit btn btn-primary btn-xs">Edit</a>
-                                    &nbsp;
-                                    <a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $tracer->id . '" data-original-title="Delete" class="delete btn btn-danger btn-xs">Delete</a>
-                                </div>';
+                ->addColumn('nama_alumni', function ($row) {
+                    return $row->alumni && $row->alumni->users
+                        ? $row->alumni->users->name
+                        : '-';
+                })
+                ->addColumn('action', function ($row) {
+                    return '<button class="btn btn-sm btn-primary">Detail</button>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
         return view('tracer.table-salinan-alumni');
     }
 
-    
-
+    // Contoh fungsi lain untuk data alumni (jika dibutuhkan)
     public function getData()
     {
         if (request()->ajax()) {
-            $tracer = Alumni::get();
-            // dd($tracer);
-            return DataTables::of($tracer)
-                
+            $alumni = Alumni::with('users')->get();
+
+            return DataTables::of($alumni)
+                ->addColumn('nama', function ($row) {
+                    return $row->users ? $row->users->name : '-';
+                })
                 ->make(true);
         }
     }

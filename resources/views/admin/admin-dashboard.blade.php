@@ -3,7 +3,7 @@
   @include('components.admin.head')
   <body>
     <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-narrow">
-      
+
       {{-- Header, Sidebar, Side Overlay --}}
       @include('components.admin.admin-header')
       @include('components.admin.sidebar')
@@ -16,7 +16,7 @@
             <div class="flex-grow-1 mb-2 mb-md-0">
               <h1 class="h3 fw-bold mb-1">Dashboard</h1>
               <h2 class="h6 fw-medium text-muted mb-0">
-                Selamat datang kembali, 
+                Selamat datang kembali,
                 <a class="fw-semibold" href="be_pages_generic_profile.html">
                   {{ Auth::user()->username }}
                 </a>
@@ -48,13 +48,13 @@
 
         {{-- Page Content --}}
         <div class="content">
-          
+
           {{-- Overview Boxes --}}
           <div class="row items-push">
             @foreach ([
               ['label' => 'Dosen', 'jumlah' => 32, 'icon' => 'fas fa-chalkboard-teacher', 'link' => '/listdosen'],
               ['label' => 'Mahasiswa', 'jumlah' => $count ?? 0 , 'icon' => 'far fa-user-circle', 'link' => '/listmahasiswa'],
-              ['label' => 'Alumni', 'jumlah' => 45, 'icon' => 'fas fa-user-graduate', 'link' => '#'],
+              ['label' => 'Alumni', 'jumlah' => $count ?? 0, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni'],
             ] as $item)
               <div class="col-sm-6 col-xxl-3">
                 <div class="block block-rounded d-flex flex-column h-100">
@@ -83,7 +83,7 @@
           <div class="row">
             <div class="col-xl-8 col-xxl-9 d-flex flex-column">
               <div class="block block-rounded flex-grow-1 d-flex flex-column">
-                
+
                 {{-- Header --}}
                 <div class="block-header block-header-default">
                   <h3 class="block-title">Statistik Alumni</h3>
@@ -124,7 +124,7 @@
             </div>
           </div>
           {{-- END Statistik Alumni --}}
-          
+
         </div>
         {{-- END Page Content --}}
       </main>

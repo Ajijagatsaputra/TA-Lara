@@ -9,55 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/admin', function () {
-    $response = Http::get('https://api.oase.poltektegal.ac.id/api/web/mahasiswa', [
-        'key' => env('OASE_API_KEY'),
-            'tahun_angkatan' => '2021'
-
-    ]);
-    $count = count($response->json()['data']);
-    // dd($count);
-    return view('admin.admin-dashboard', compact('count'));
-});
-
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
-
-Route::post('register', [RegisteredUserController::class, 'store']);
-
-Route::get('/listmahasiswa', function () {
-    return view('mahasiswa.table-mahasiswa');
-});
-
-Route::get('/listdosen', function () {
-    return view('dosen.table-dosen');
-});
-
-Route::get('/listalumni', function () {
-    return view('alumni.table-alumni');
-});
-
-Route::get('/listtraceralumni', [TracerAlumniController::class, 'index'])->name ('tracer.index');
-
-Route::get('/listtracerpengguna', function () {
-    return view('tracer.table-salinan-pengguna');
-});
-
-// Route::get('/kemahasiswaan', [KemahasiswaanController::class, 'index'])->name('kemahasiswaan');
-
-Route::get('/kuesioner', [KuesionerAlumni::class, 'index'])->name('tracer.kuesioner');
-Route::post('/kuesioner/store', [KuesionerAlumni::class, 'store'])->name('tracer.store');
-
-Route::get('/kuesioner-pengguna', function () {
-    return view('components.kuesioner-pengguna');
-});
-
-Route::get('/profile', function () {
-    return view('components.profile');
-});
-
+// ✅ Home: redirect ke dashboard sesuai role
 Route::get('/', function () {
     if (Auth::check() && Auth::user()->role === 'admin') {
         return view('admin.admin-dashboard');
@@ -66,17 +18,46 @@ Route::get('/', function () {
     } else {
         return view('main');
     };
-}) ->name('home')->middleware('auth');
+})->name('home')->middleware('auth');
 
-Route::get('/api/mahasiswa', [MahasiswaController::class, 'getData'])->name('api.mahasiswa');
-Route::get('/api/alumni', [TracerAlumniController::class, 'getData'])->name('api.alumni');
-
-
-Route::get('login', [AuthenticatedSessionController::class, 'create'])
-    ->name('login');
-
+// ✅ Auth
+Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
+Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
+// ✅ Register (umum)
+Route::get('/register', fn() => view('register'))->name('register');
+Route::post('register', [RegisteredUserController::class, 'store']);
 
-Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->name('logout');
+// ✅ Admin-only routes
+Route::middleware(['auth', 'cekrole:admin'])->group(function () {
+    Route::get('/admin', function () {
+        $response = Http::get('https://api.oase.poltektegal.ac.id/api/web/mahasiswa', [
+            'key' => env('OASE_API_KEY'),
+            'tahun_angkatan' => '2021'
+        ]);
+        $count = count($response->json()['data']);
+        return view('admin.admin-dashboard', compact('count'));
+    });
+
+    Route::get('/listmahasiswa', fn() => view('mahasiswa.table-mahasiswa'));
+    Route::get('/listdosen', fn() => view('dosen.table-dosen'));
+    Route::get('/listalumni', fn() => view('alumni.table-alumni'));
+    Route::get('/listtraceralumni', [TracerAlumniController::class, 'index'])->name('tracer.index');
+    Route::get('/listtracerpengguna', fn() => view('tracer.table-salinan-pengguna'));
+    Route::get('/api/mahasiswa', [MahasiswaController::class, 'getData'])->name('api.mahasiswa');
+    Route::get('/api/alumni', [TracerAlumniController::class, 'getData'])->name('api.alumni');
+});
+
+// ✅ Alumni-only routes
+Route::middleware(['auth', 'cekrole:alumni'])->group(function () {
+    Route::get('/kuesioner', [KuesionerAlumni::class, 'index'])->name('tracer.kuesioner');
+    Route::post('/kuesioner/store', [KuesionerAlumni::class, 'store'])->name('tracer.store');
+});
+
+// ✅ Routes for authenticated users (admin & alumni)
+Route::middleware('auth')->group(function () {
+    Route::get('/kuesioner', fn() => view('components.kuesioner'));
+    Route::get('/kuesioner-pengguna', fn() => view('components.kuesioner-pengguna'));
+    Route::get('/profile', fn() => view('components.profile'));
+});

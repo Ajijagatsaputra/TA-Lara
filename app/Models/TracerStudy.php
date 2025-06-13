@@ -25,10 +25,14 @@ class TracerStudy extends Model
         'saran',
     ];
 
+    protected $casts = [
+        'tanggal_isi' => 'date',
+        'gaji' => 'decimal:2',
+    ];
+
     // Relasi ke model Alumni
     public function alumni()
     {
         return $this->belongsTo(Alumni::class, 'id_alumni');
     }
 }
-

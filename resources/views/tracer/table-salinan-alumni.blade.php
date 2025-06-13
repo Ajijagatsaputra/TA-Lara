@@ -10,160 +10,202 @@
         @include('components.admin.sidebar')
         @include('components.admin.side-overlay')
 
-        <!-- Main Container -->
         <main id="main-container">
-            <!-- Hero -->
-            <div class="bg-body-light border-bottom py-3">
+            <div class="bg-body-light border-bottom py-4">
                 <div class="content d-flex flex-column flex-sm-row justify-content-between align-items-center">
                     <div>
-                        <h1 class="h3 fw-bold mb-0">Data Salinan Tracer Alumni</h1>
-                        <p class="text-muted fs-sm">Kelola data salinan tracer alumni.</p>
+                        <h1 class="h3 fw-bold text-primary mb-1">📄 Data Salinan Tracer Alumni</h1>
+                        <p class="text-muted mb-0">Kelola data tracer alumni secara efisien dan rapi.</p>
                     </div>
-                   
                 </div>
             </div>
-            <!-- END Hero -->
 
-            <!-- Page Content -->
             <div class="content">
-                <div class="block block-rounded shadow-sm">
-                    <div class="block-header block-header-default bg-light">
-                        <h3 class="block-title">Tabel Salinan Alumni</h3>
+                <div class="block block-rounded shadow">
+                    <div class="block-header block-header-default bg-primary text-white">
+                        <h3 class="block-title fw-semibold">📊 Tabel Salinan Alumni</h3>
                     </div>
                     <div class="block-content block-content-full">
+
                         <div class="table-responsive">
-                            <table class="table" id="datatable">
-                                  <thead>
-                                      <tr>
+                            <table class="table table-bordered table-striped table-hover align-middle text-center"
+                                id="datatable">
+                                <thead class="table-light">
+                                    <tr>
                                         <th>#</th>
-                                        <th>Nama Lengkap</th>
-                                        <th>Email</th>
-                                        <th>Alamat Lengkap</th>
-                                        <th>No.HP</th>
-                                        <th>Prodi</th>
-                                        <th>Tahun Lulusan</th>
+                                        <th>Tanggal Mengisi</th>
+                                        <th>Nama Alumni</th>
+                                        <th>Perusahaan</th>
+                                        <th>Relevansi</th>
                                         <th>Status</th>
-                                        <th>Dibuat Pada</th>
-                                        <th>Diperbarui Pada</th>
-                                        <th>Aksi</th>
-                                      </tr>
-                                  </thead>
-                              </table>
+                                        <th>Jabatan</th>
+                                        <th>Gaji</th>
+                                        <th>Alamat</th>
+                                        <th>Saran</th>
+                                        <th>Dibuat</th>
+                                        <th>Diperbarui</th>
+                                        <th class="text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- END Page Content -->
         </main>
 
         @include('components.admin.footer')
+
+        <!-- Modal Detail -->
+        <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="modalDetailLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="modalDetailLabel">Detail Tracer Alumni</h5>
+                        <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-borderless">
+                            <tbody id="detailContent"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="assets/js/lib/jquery.min.js"></script>
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/oneui.app.min.js"></script>
-
-    <!-- DataTables & Export Plugins -->
     <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="assets/js/plugins/datatables-buttons/dataTables.buttons.min.js"></script>
-    <script src="assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
-    <script src="assets/js/plugins/datatables-buttons-jszip/jszip.min.js"></script>
-    <script src="assets/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js"></script>
-    <script src="assets/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js"></script>
-    <script src="assets/js/plugins/datatables-buttons/buttons.html5.min.js"></script>
-    <script src="assets/js/plugins/datatables-buttons/buttons.print.min.js"></script>
-     <script type="text/javascript">
+
+    <script>
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
-        $(document).ready(function() {
-            $('#datatable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ route('tracer.index') }}",
-                    "type": "GET"
-                },
-                "columns": [
+        $(document).ready(function () {
+            const table = $('#datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: "{{ route('tracer.index') }}",
+                columns: [
                     {
                         data: 'id',
-                        name: 'id',
-                        render: function (data, type, row, meta) {
-                            return meta.row + 1;
-                        }
-                    },
-                    { data: 'id_alumni', name: 'id_alumni' },
-                    { data: 'tanggal_isi', name: 'tanggal_isi' },
-                    { data: 'status_kerja', name: 'status_kerja' },
-                    { data: 'relevansi_pekerjaan', name: 'relevansi_pekerjaan' },
-                    { data: 'pekerjaan', name: 'pekerjaan' },
-                    { data: 'gaji', name: 'gaji' },
-                    { data: 'tempat_kerja', name: 'tempat_kerja' },
-                    { data: 'created_at', name: 'created_at' },
-                    { data: 'updated_at', name: 'updated_at' },
-                    { data: 'action', name: 'action' }
-                ],
-                "order": [[ 0, "desc" ]],
-
-            });
-        });
-    </script>
-
-    <!-- Inisialisasi DataTable -->
-    <script>
-        jQuery(document).ready(function() {
-            jQuery('.js-dataTable-full').DataTable({
-                paging: true,
-                searching: true,
-                ordering: true,
-                responsive: true, // pastikan ini aktif
-                autoWidth: false,
-                pageLength: 5,
-                lengthMenu: [
-                    [5, 10, 15, 20],
-                    [5, 10, 15, 20]
-                ],
-                dom: "<'dt-toolbar row mb-3'" +
-                    "<'col-12 col-md-6 d-flex align-items-center gap-2'B>" + // tombol export
-                    "<'col-12 col-md-6 text-md-end mt-2 mt-md-0'f>" + // search bar
-                    ">" +
-                    "<'row'<'col-sm-12 table-responsive'tr>>" + // buat tabel jadi scrollable di mobile
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [{
-                        extend: 'excelHtml5',
-                        className: 'btn btn-sm btn-success',
-                        text: '<i class="fa fa-file-excel me-1"></i> Excel',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
+                        render: (data, type, row, meta) => meta.row + 1
                     },
                     {
-                        extend: 'pdfHtml5',
-                        className: 'btn btn-sm btn-danger',
-                        text: '<i class="fa fa-file-pdf me-1"></i> PDF',
-                        orientation: 'landscape',
-                        pageSize: 'A4',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
+                        data: 'tanggal_isi',
+                        render: (data) => data ? new Date(data).toLocaleDateString('id-ID') : ''
                     },
+                    { data: 'alumni.nama_lengkap', name: 'alumni.nama_lengkap' },
+                    { data: 'nama_perusahaan' },
+                    { data: 'relevansi_pekerjaan' },
+                    { data: 'bekerja' },
+                    { data: 'jabatan' },
+                    { data: 'gaji' },
+                    { data: 'alamat_pekerjaan' },
+                    { data: 'saran' },
+                    { data: 'created_at' },
+                    { data: 'updated_at' },
                     {
-                        extend: 'print',
-                        className: 'btn btn-sm btn-info',
-                        text: '<i class="fa fa-print me-1"></i> Cetak',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function (data) {
+                            return `
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button class="btn btn-sm btn-info btn-view"
+                                        data-tanggal="${data.tanggal_isi}"
+                                        data-nama="${data.nama_lengkap}"
+                                        data-nama="${data.alumni?.nama_lengkap ?? '-'}"
+                                        data-perusahaan="${data.nama_perusahaan}"
+                                        data-relevansi="${data.relevansi_pekerjaan}"
+                                        data-status="${data.bekerja}"
+                                        data-jabatan="${data.jabatan}"
+                                        data-gaji="${data.gaji}"
+                                        data-alamat="${data.alamat_pekerjaan}"
+                                        data-saran="${data.saran}"
+                                        data-created="${data.created_at}"
+                                        data-updated="${data.updated_at}">
+                                        <i class="fa fa-eye me-1"></i> Lihat
+                                    </button>
+                                    <button class="btn btn-sm btn-danger btn-delete" data-id="${data.id}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>`;
                         }
                     }
-                ]
+                ],
+                order: [[0, 'desc']]
+            });
+
+            // Custom Search
+            $('#customSearch').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+
+            // View Modal
+            $('#datatable').on('click', '.btn-view', function () {
+                const fields = {
+                    Tanggal: $(this).data('tanggal'),
+                    Alumni : $(this).data('alumni.nama_lengkap'),
+                    Perusahaan: $(this).data('perusahaan'),
+                    Relevansi: $(this).data('relevansi'),
+                    Status: $(this).data('status'),
+                    Jabatan: $(this).data('jabatan'),
+                    Gaji: $(this).data('gaji'),
+                    Alamat: $(this).data('alamat'),
+                    Saran: $(this).data('saran'),
+                    Dibuat: $(this).data('created'),
+                    Diperbarui: $(this).data('updated')
+                };
+
+                let html = '';
+                for (const key in fields) {
+                    html += `<tr><th class="text-start">${key}</th><td>${fields[key]}</td></tr>`;
+                }
+
+                $('#detailContent').html(html);
+                $('#modalDetail').modal('show');
+            });
+
+            // Delete
+            $('#datatable').on('click', '.btn-delete', function () {
+                const id = $(this).data('id');
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/admin/tracer/${id}`,
+                            type: 'DELETE',
+                            success: function () {
+                                table.ajax.reload();
+                                Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
+                            },
+                            error: function () {
+                                Swal.fire('Gagal', 'Tidak dapat menghapus data.', 'error');
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>
-
 </body>
-
 </html>
