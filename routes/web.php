@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminTracerController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\KuesionerAlumni;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\TracerAlumniController;
+use App\Http\Controllers\TracerStudyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +46,7 @@ Route::middleware(['auth', 'cekrole:admin'])->group(function () {
     Route::get('/listdosen', fn() => view('dosen.table-dosen'));
     Route::get('/listalumni', fn() => view('alumni.table-alumni'));
     Route::get('/listtraceralumni', [TracerAlumniController::class, 'index'])->name('tracer.index');
-    Route::get('/listtracerpengguna', fn() => view('tracer.table-salinan-pengguna'));
+    // Route::get('/listtracerpengguna', fn() => view('tracer.table-salinan-pengguna'));
     Route::get('/api/mahasiswa', [MahasiswaController::class, 'getData'])->name('api.mahasiswa');
     Route::get('/api/alumni', [TracerAlumniController::class, 'getData'])->name('api.alumni');
 });
@@ -53,11 +55,15 @@ Route::middleware(['auth', 'cekrole:admin'])->group(function () {
 Route::middleware(['auth', 'cekrole:alumni'])->group(function () {
     Route::get('/kuesioner', [KuesionerAlumni::class, 'index'])->name('tracer.kuesioner');
     Route::post('/kuesioner/store', [KuesionerAlumni::class, 'store'])->name('tracer.store');
+    Route::get('/kuesioner-pengguna', [TracerStudyController::class, 'index'])->name('tracer.kuesioner-pengguna');
+    Route::post('/kuesioner-pengguna/store', [TracerStudyController::class, 'store'])->name('tracer.store');
 });
 
-// ✅ Routes for authenticated users (admin & alumni)
-Route::middleware('auth')->group(function () {
-    Route::get('/kuesioner', fn() => view('components.kuesioner'));
-    Route::get('/kuesioner-pengguna', fn() => view('components.kuesioner-pengguna'));
-    Route::get('/profile', fn() => view('components.profile'));
-});
+// // ✅ Routes for authenticated users (admin & alumni)
+// Route::middleware('auth')->group(function () {
+//     Route::get('/kuesioner', fn() => view('components.kuesioner'));
+//     Route::get('/kuesioner-pengguna', fn() => view('components.kuesioner-pengguna'));
+//     Route::get('/profile', fn() => view('components.profile'));
+// });
+
+Route::resource('listtracerpengguna', AdminTracerController::class);

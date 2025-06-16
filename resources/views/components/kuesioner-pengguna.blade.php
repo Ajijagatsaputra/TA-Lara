@@ -85,6 +85,12 @@
 
     <body>
         <div class="container mt-4 mb-4">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show mt-4 mx-4" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="questionnaire-container">
                 <!-- Header -->
                 <div class="header-section">
@@ -93,7 +99,8 @@
                 </div>
 
                 <div class="p-4">
-                    <form id="alumniForm" action="#" method="POST">
+                    <form id="alumniForm" action="{{ route('tracer.store') }}" method="POST">
+                        @csrf
                         <!-- Informasi Pribadi -->
                         <div class="section-card">
                             <div class="section-header">
@@ -104,11 +111,13 @@
                                 <div class="row g-4">
                                     <div class="col-md-6">
                                         <label class="form-label">Nama Lengkap</label>
-                                        <input type="text" name="nama" class="form-control" placeholder="Masukkan nama lengkap" required>
+                                        <input type="text" name="nama" class="form-control"
+                                            placeholder="Masukkan nama lengkap" value="{{ $alumni->nama_lengkap ?? '' }}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Alamat Lengkap</label>
-                                        <input type="text" name="alamat" class="form-control" placeholder="Desa, Kecamatan, Kabupaten" required>
+                                        <input type="text" name="alamat" class="form-control" 
+                                            placeholder="Desa, Kecamatan, Kabupaten" value="{{ $alumni->alamat ?? '' }}" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Program Studi</label>
@@ -122,7 +131,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Posisi/Jabatan Pekerja</label>
-                                        <input type="text" name="jabatan" class="form-control" placeholder="Software Developer" required>
+                                        <input type="text" name="jabatan" class="form-control"
+                                            placeholder="Software Developer" required>
                                     </div>
                                 </div>
                             </div>
@@ -228,23 +238,28 @@
                                 <div class="row g-4">
                                     <div class="col-md-6">
                                         <label class="form-label">Nama Atasan</label>
-                                        <input type="text" name="nama_atasan" class="form-control" placeholder="Nama Atasan" required>
+                                        <input type="text" name="nama_atasan" class="form-control"
+                                            placeholder="Nama Atasan" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">NIP Atasan</label>
-                                        <input type="text" name="nip_atasan" class="form-control" placeholder="NIP Atasan" required>
+                                        <input type="text" name="nip_atasan" class="form-control"
+                                            placeholder="NIP Atasan" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Posisi Jabatan Atasan</label>
-                                        <input type="text" name="posisi_jabatan_atasan" class="form-control" placeholder="Posisi Jabatan Atasan" required>
+                                        <input type="text" name="posisi_jabatan_atasan" class="form-control"
+                                            placeholder="Posisi Jabatan Atasan" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Nama Perusahaan</label>
-                                        <input type="text" name="nama_perusahaan" class="form-control" placeholder="Nama Perusahaan" required>
+                                        <input type="text" name="nama_perusahaan" class="form-control"
+                                            placeholder="Nama Perusahaan" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Alamat Perusahaan</label>
-                                        <input type="text" name="alamat_perusahaan" class="form-control" placeholder="Alamat Perusahaan" required>
+                                        <input type="text" name="alamat_perusahaan" class="form-control"
+                                            placeholder="Alamat Perusahaan" required>
                                     </div>
                                 </div>
                             </div>
@@ -257,8 +272,10 @@
                                 Saran dan Masukan
                             </div>
                             <div class="section-body">
-                                <label class="form-label">Berikan saran atau kritik untuk perbaikan kurikulum dan fasilitas kampus</label>
-                                <textarea name="saran" rows="5" class="form-control" placeholder="Tulis saran, kritik, atau masukan Anda di sini..."></textarea>
+                                <label class="form-label">Berikan saran atau kritik untuk perbaikan kurikulum dan fasilitas
+                                    kampus</label>
+                                <textarea name="saran" rows="5" class="form-control"
+                                    placeholder="Tulis saran, kritik, atau masukan Anda di sini..."></textarea>
                             </div>
                         </div>
 

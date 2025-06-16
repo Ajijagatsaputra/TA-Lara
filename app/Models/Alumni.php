@@ -25,13 +25,11 @@ class Alumni extends Model
         'status_mahasiswa',
     ];
 
-    // Relasi ke model Mahasiswa
     public function users()
     {
         return $this->belongsTo(User::class, 'id_users');
     }
 
-    // Relasi ke model Tracerstudy
     public function tracerstudy()
     {
         return $this->hasMany(Tracerstudy::class, 'id_alumni');

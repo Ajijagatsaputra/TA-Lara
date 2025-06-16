@@ -256,7 +256,7 @@
                                             Email
                                         </label>
                                         <input type="email" name="email" class="form-control"
-                                           value="{{ $alumni->users->email ?? '' }}" placeholder="contoh@email.com" required>
+                                           value="{{ old('email', $alumni->users->email ?? auth()->user()->email ?? '') }}"  placeholder="contoh@email.com" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">

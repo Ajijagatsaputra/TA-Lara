@@ -13,6 +13,7 @@ class KuesionerAlumni extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
         $alumni = Alumni::where('id_users', auth()->user()->id)->first();
         return view('components.kuesioner', compact('alumni'));
     }
