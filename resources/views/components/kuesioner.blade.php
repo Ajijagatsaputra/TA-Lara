@@ -224,7 +224,7 @@
                         <small class="text-muted">Progress: <span id="progressText">0%</span></small>
                     </div>
 
-                    <form id="alumniForm" action="{{ route('tracer.store') }}" method="POST">
+                    <form id="alumniForm" action="{{ route('tracer.create') }}" method="POST">
                         @csrf
                         <!-- Informasi Pribadi -->
                         <div class="section-card animate-fade-in">
