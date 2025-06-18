@@ -241,7 +241,6 @@
         <link rel="stylesheet" href="{{ asset('assets/css/oneui.min.css') }}">
         <script src="{{ asset('assets/js/plugins/penggunatables/jquery.penggunaTables.min.js') }}"></script>
         <script src="{{ asset('assets/js/plugins/penggunatables-bs5/js/penggunaTables.bootstrap5.min.js') }}"></script>
-
     </body>
 @endsection
 

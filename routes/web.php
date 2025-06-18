@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminTracerController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\KuesionerAlumni;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\TracerAlumniController;
@@ -37,8 +38,7 @@ Route::get('/', function () {
 
 
         // 3. Dosen berdasarkan kd_prodi dan kode_tahun_akademik
-        $countDosen = 0;
-        $kodeProdi = '04'; // ganti sesuai kode prodi yang ingin diambil
+        $kodeProdi = '09';
         $tahunAkademikList = ['20201', '20211', '20221', '20231', '20241', '20251'];
 
         foreach ($tahunAkademikList as $kodeTA) {
@@ -113,6 +113,8 @@ Route::middleware(['auth', 'cekrole:admin'])->group(function () {
     // Route::get('/listtracerpengguna', fn() => view('tracer.table-salinan-pengguna'));
     Route::get('/api/mahasiswa', [MahasiswaController::class, 'getData'])->name('api.mahasiswa');
     Route::get('/api/alumni', [TracerAlumniController::class, 'getData'])->name('api.alumni');
+    Route::get('/api/dosen', [DosenController::class, 'getDataDosen'])->name('api.dosen');
+    Route::get('/api/tahun-akademik', [DosenController::class, 'getTahunAkademik'])->name('api.tahun-akademik');
 });
 
 // ✅ Alumni-only routes
@@ -125,11 +127,11 @@ Route::middleware(['auth', 'cekrole:alumni'])->group(function () {
     Route::get('/tracer-pengguna/form/{id}', [TracerStudyController::class, 'showPengguna'])->name('tracer.showpengguna');
 });
 
-// // ✅ Routes for authenticated users (admin & alumni)
-// Route::middleware('auth')->group(function () {
-//     Route::get('/kuesioner', fn() => view('components.kuesioner'));
-//     Route::get('/kuesioner-pengguna', fn() => view('components.kuesioner-pengguna'));
-//     Route::get('/profile', fn() => view('components.profile'));
-// });
+// ✅ Routes for authenticated users (admin & alumni)
+Route::middleware('auth')->group(function () {
+    // Route::get('/kuesioner', fn() => view('components.kuesioner'));
+    // Route::get('/kuesioner-pengguna', fn() => view('components.kuesioner-pengguna'));
+    Route::get('/profile', fn() => view('components.profile'));
+});
 
 Route::resource('listtracerpengguna', AdminTracerController::class);

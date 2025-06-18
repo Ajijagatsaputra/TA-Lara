@@ -190,9 +190,8 @@
     </div>
     </main>
     </div>
-@endsection
 
-@push('style')
+
     <style>
         .card {
             transition: all 0.2s ease;
@@ -223,13 +222,12 @@
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
         }
     </style>
-@endpush
 
-@push('script')
+
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/oneui.min.css') }}">
     <script src="{{ asset('assets/js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-@endpush
+@endsection

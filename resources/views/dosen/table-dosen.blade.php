@@ -24,6 +24,48 @@
             <div class="content">
                 <div class="block block-rounded shadow-sm">
                     <div class="block-content block-content-full">
+                        <div class="mb-3">
+                            <label for="filter-tahun" class="form-label fw-semibold">Filter Tahun Akademik:</label>
+                            <select id="filter-tahun" class="form-select w-auto d-inline-block">
+                                <option value="">Memuat data...</option>
+                            </select>
+                        </div>
+
+                        <script>
+                            $(document).ready(function() {
+                                // Ambil data tahun dari route Laravel lokal
+                                $.ajax({
+                                    url: "{{ route('api.tahun-akademik') }}",
+                                    type: 'GET',
+                                    success: function(response) {
+                                        let select = $('#filter-tahun');
+                                        select.empty();
+
+                                        if (response.status && response.data && response.data.length > 0) {
+                                            response.data.forEach(function(item) {
+                                                let selected = (item.status == 1) ? 'selected' : '';
+                                                select.append(
+                                                    `<option value="${item.kode}" ${selected}>${item.tahun_akademik}</option>`
+                                                    );
+                                            });
+
+                                            // Reload datatable setelah data tahun ter-load
+                                            $('.js-dataTable-full').DataTable().ajax.reload();
+                                        } else {
+                                            select.append(`<option value="">Tidak ada data</option>`);
+                                        }
+                                    },
+                                    error: function() {
+                                        $('#filter-tahun').html('<option value="">Gagal memuat</option>');
+                                    }
+                                });
+
+                                // Event saat user ubah tahun
+                                $('#filter-tahun').on('change', function() {
+                                    $('.js-dataTable-full').DataTable().ajax.reload();
+                                });
+                            });
+                        </script>
                         <div class="table-responsive">
                             <table
                                 class="table table-bordered table-striped table-hover align-middle js-dataTable-full w-100">
@@ -107,12 +149,11 @@
                     }
                 ],
                 ajax: {
-                    url: 'https://api.oase.poltektegal.ac.id/api/web/dosen',
+                    url: '/api/dosen',
                     type: 'GET',
                     dataType: 'json',
-                    data: {
-                        key: '53fd8f6e-fb0b-4616-8a52-83619dfefa03',
-                        kode_tahun_akademik: '2024/2025 - Ganjil'
+                    data: function(d) {
+                        d.kode_tahun_akademik = $('#filter-tahun').val(); // ambil dari dropdown
                     },
                     dataSrc: function(json) {
                         var return_data = [];
@@ -131,7 +172,6 @@
 
                         return return_data;
                     }
-
                 },
                 columns: [{
                         data: 'kd_dosen'
