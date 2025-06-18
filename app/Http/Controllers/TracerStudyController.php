@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumni;
 use App\Models\tracer_pengguna;
+use App\Models\TracerStudy;
 use Illuminate\Http\Request;
 
 class TracerStudyController extends Controller
@@ -12,26 +13,26 @@ class TracerStudyController extends Controller
     public function index(Request $request)
     {
         $query = tracer_pengguna::query();
-    
+
         // Filter berdasarkan prodi jika ada
         if ($request->has('prodi')) {
             $query->byProdi($request->prodi);
         }
-    
+
         // Filter berdasarkan tahun jika ada
         if ($request->has('tahun')) {
             $query->byYear($request->tahun);
         }
-    
+
         $data = $query->latest()->paginate(10);
-    
+
         // INI BAGIAN TERPENTING: ambil data alumni yang login
         $user = auth()->user();
         $alumni = Alumni::where('id_users', $user->id)->first();
-    
+
         return view('components.kuesioner-pengguna', compact('data', 'alumni'));
     }
-    
+
 
     // Menampilkan form input
     public function create()
@@ -69,11 +70,26 @@ class TracerStudyController extends Controller
     }
 
     // Menampilkan detail satu data
-    public function show($id)
+    // public function show($id)
+    // {
+    //     $data = tracer_pengguna::findOrFail($id);
+    //     return view('tracer.pengguna.detail-salinan-table', compact('data'));
+    // }
+    public function showPengguna($id)
     {
-        $data = tracer_pengguna::findOrFail($id);
-        return view('tracer.pengguna.detail-salinan-table', compact('data'));
+        $pengguna = tracer_pengguna::where('user_id', $id)->first(); // atau ->get() jika banyak
+
+        return view('alumni.detail-pengguna', compact('pengguna'));
+    }public function showStudy($id)
+    {
+        $tracer = TracerStudy::with('alumni.users')->findOrFail($id);
+        return view('alumni.detail-study', compact('tracer'));
     }
+    
+    
+    
+    
+    
 
     // Menampilkan form edit
     public function edit($id)

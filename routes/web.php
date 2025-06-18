@@ -7,20 +7,84 @@ use App\Http\Controllers\KuesionerAlumni;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\TracerAlumniController;
 use App\Http\Controllers\TracerStudyController;
+use App\Models\TracerStudy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
-// ✅ Home: redirect ke dashboard sesuai role
+
+
 Route::get('/', function () {
     if (Auth::check() && Auth::user()->role === 'admin') {
-        return view('admin.admin-dashboard');
-    } elseif (Auth::check() && Auth::user()->role === 'alumni') {
-        return view('main');
-    } else {
-        return view('main');
-    };
+        $key = env('OASE_API_KEY');
+
+        $countMahasiswa = 0;
+        $countDosen = 0;
+        $countAlumni = 0;
+
+        // ✅ Mahasiswa (dengan parameter tahun_angkatan)
+        $countMahasiswa = 0;
+        for ($tahun = 2020; $tahun <= 2025; $tahun++) {
+            $res = Http::get('https://api.oase.poltektegal.ac.id/api/web/mahasiswa', [
+                'key' => $key,
+                'tahun_angkatan' => $tahun
+            ]);
+
+            if ($res->successful() && isset($res['data'])) {
+                $countMahasiswa += count($res['data']);
+            }
+        }
+
+
+        // 3. Dosen berdasarkan kd_prodi dan kode_tahun_akademik
+        $countDosen = 0;
+        $kodeProdi = '04'; // ganti sesuai kode prodi yang ingin diambil
+        $tahunAkademikList = ['20201', '20211', '20221', '20231', '20241', '20251'];
+
+        foreach ($tahunAkademikList as $kodeTA) {
+            $resDosen = Http::get('https://api.oase.poltektegal.ac.id/api/web/dosen', [
+                'key' => $key,
+                'kd_prodi' => $kodeProdi,
+                'kode_tahun_akademik' => $kodeTA
+            ]);
+
+            if ($resDosen->successful() && isset($resDosen['data'])) {
+                $countDosen += count($resDosen['data']);
+            }
+        }
+
+        // Alumni angkatan 2020–2025
+        $countAlumni = 0;
+        for ($tahun = 2020; $tahun <= 2025; $tahun++) {
+            $resAlumni = Http::get('https://api.oase.poltektegal.ac.id/api/web/alumni', [
+                'key' => $key,
+                'tahun_angkatan' => $tahun
+            ]);
+
+            if ($resAlumni->successful() && isset($resAlumni['data'])) {
+                $countAlumni += count($resAlumni['data']);
+            }
+        }
+
+        // Statistik alumni dari kolom 'bekerja'
+        $bekerja = TracerStudy::where('bekerja', 'ya')->count();
+        $belum = TracerStudy::where('bekerja', 'tidak')->count();
+        $total = $bekerja + $belum;
+
+        $statistikAlumni = [
+            'Bekerja' => $total ? round(($bekerja / $total) * 100, 1) . '%' : '0%',
+            'Belum Bekerja' => $total ? round(($belum / $total) * 100, 1) . '%' : '0%',
+            'Wirausaha' => '0%' // Jika ingin tambah kategori ini, kamu bisa cek kolom atau buat filter sendiri
+        ];
+
+        return view('admin.admin-dashboard', compact('countMahasiswa', 'countDosen', 'countAlumni', 'statistikAlumni'));
+    }
+
+    return view('main');
 })->name('home')->middleware('auth');
+
+
+
 
 // ✅ Auth
 Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -54,9 +118,11 @@ Route::middleware(['auth', 'cekrole:admin'])->group(function () {
 // ✅ Alumni-only routes
 Route::middleware(['auth', 'cekrole:alumni'])->group(function () {
     Route::get('/kuesioner', [KuesionerAlumni::class, 'index'])->name('tracer.kuesioner');
-    Route::post('/kuesioner/store', [KuesionerAlumni::class, 'store'])->name('tracer.store');
+    Route::post('/kuesioner/store', [KuesionerAlumni::class, 'store'])->name('tracer.create');
     Route::get('/kuesioner-pengguna', [TracerStudyController::class, 'index'])->name('tracer.kuesioner-pengguna');
     Route::post('/kuesioner-pengguna/store', [TracerStudyController::class, 'store'])->name('tracer.store');
+    Route::get('/tracer-study/form/{id}', [TracerStudyController::class, 'showStudy'])->name('tracer.showstudy');
+    Route::get('/tracer-pengguna/form/{id}', [TracerStudyController::class, 'showPengguna'])->name('tracer.showpengguna');
 });
 
 // // ✅ Routes for authenticated users (admin & alumni)

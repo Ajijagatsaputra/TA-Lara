@@ -42,7 +42,25 @@
                     <i class="fa fa-check-circle fa-3x text-success mb-3"></i>
                     <h5 class="fw-bold text-success">Sudah Mengisi</h5>
                     <p class="text-muted mb-0">Terima kasih telah berpartisipasi dalam tracer study.</p>
-                    <a href="/tracer-study/form" class="btn btn-outline-primary btn-sm mt-3">Lihat Jawaban</a>
+                    {{-- <a href="{{ route('tracer.show', Auth::user()->id) }}" class="btn btn-outline-primary btn-sm mt-3">Lihat Jawaban</a> --}}
+                    <div class="dropdown mt-3">
+                        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Lihat Jawaban
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ route('tracer.showpengguna', Auth::user()->id) }}?tipe=pengguna">Tracer
+                                    Pengguna</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ route('tracer.showstudy', Auth::user()->id) }}?tipe=tracer">Tracer Study</a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -76,7 +94,7 @@
                 },
                 {
                     label: 'Mengisi Kuesioner',
-                    data: [ 10, 17, 8, 15, 20, 50, 200],
+                    data: [10, 17, 8, 15, 20, 50, 200],
                     backgroundColor: 'rgba(0,200,180,0.8)'
                 }
             ]
