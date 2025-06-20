@@ -81,20 +81,24 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Bar Chart (Rekap Alumni)
+    const tahun = @json($tahun);
+    const totalAlumni = @json($alumniData);
+    const totalKuesioner = @json($kuisonerData);
+    
     const ctxBar = document.getElementById('rekapAlumniChart').getContext('2d');
-    const rekapAlumniChart = new Chart(ctxBar, {
+    new Chart(ctxBar, {
         type: 'bar',
         data: {
-            labels: ['2021', '2022', '2023', '2024', '2025'],
-            datasets: [{
+            labels: tahun,
+            datasets: [
+                {
                     label: 'Total Alumni',
-                    data: [310, 480, 320, 430, 440],
+                    data: totalAlumni,
                     backgroundColor: 'rgba(66,133,244,0.8)'
                 },
                 {
                     label: 'Mengisi Kuesioner',
-                    data: [10, 17, 8, 15, 20, 50, 200],
+                    data: totalKuesioner,
                     backgroundColor: 'rgba(0,200,180,0.8)'
                 }
             ]
@@ -103,25 +107,7 @@
             responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Jumlah Alumni'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        font: {
-                            size: 13
-                        }
-                    }
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false
+                    beginAtZero: true
                 }
             }
         }

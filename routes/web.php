@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminTracerController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KuesionerAlumni;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\TracerAlumniController;
@@ -14,77 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 
-
-Route::get('/', function () {
-    if (Auth::check() && Auth::user()->role === 'admin') {
-        $key = env('OASE_API_KEY');
-
-        $countMahasiswa = 0;
-        $countDosen = 0;
-        $countAlumni = 0;
-
-        // ✅ Mahasiswa (dengan parameter tahun_angkatan)
-        $countMahasiswa = 0;
-        for ($tahun = 2020; $tahun <= 2025; $tahun++) {
-            $res = Http::get('https://api.oase.poltektegal.ac.id/api/web/mahasiswa', [
-                'key' => $key,
-                'tahun_angkatan' => $tahun
-            ]);
-
-            if ($res->successful() && isset($res['data'])) {
-                $countMahasiswa += count($res['data']);
-            }
-        }
-
-
-        // 3. Dosen berdasarkan kd_prodi dan kode_tahun_akademik
-        $kodeProdi = '09';
-        $tahunAkademikList = ['20201', '20211', '20221', '20231', '20241', '20251'];
-
-        foreach ($tahunAkademikList as $kodeTA) {
-            $resDosen = Http::get('https://api.oase.poltektegal.ac.id/api/web/dosen', [
-                'key' => $key,
-                'kd_prodi' => $kodeProdi,
-                'kode_tahun_akademik' => $kodeTA
-            ]);
-
-            if ($resDosen->successful() && isset($resDosen['data'])) {
-                $countDosen += count($resDosen['data']);
-            }
-        }
-
-        // Alumni angkatan 2020–2025
-        $countAlumni = 0;
-        for ($tahun = 2020; $tahun <= 2025; $tahun++) {
-            $resAlumni = Http::get('https://api.oase.poltektegal.ac.id/api/web/alumni', [
-                'key' => $key,
-                'tahun_angkatan' => $tahun
-            ]);
-
-            if ($resAlumni->successful() && isset($resAlumni['data'])) {
-                $countAlumni += count($resAlumni['data']);
-            }
-        }
-
-        // Statistik alumni dari kolom 'bekerja'
-        $bekerja = TracerStudy::where('bekerja', 'ya')->count();
-        $belum = TracerStudy::where('bekerja', 'tidak')->count();
-        $total = $bekerja + $belum;
-
-        $statistikAlumni = [
-            'Bekerja' => $total ? round(($bekerja / $total) * 100, 1) . '%' : '0%',
-            'Belum Bekerja' => $total ? round(($belum / $total) * 100, 1) . '%' : '0%',
-            'Wirausaha' => '0%' // Jika ingin tambah kategori ini, kamu bisa cek kolom atau buat filter sendiri
-        ];
-
-        return view('admin.admin-dashboard', compact('countMahasiswa', 'countDosen', 'countAlumni', 'statistikAlumni'));
-    }
-
-    return view('main');
-})->name('home')->middleware('auth');
-
-
-
+Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
 // ✅ Auth
 Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -96,7 +27,7 @@ Route::get('/register', fn() => view('register'))->name('register');
 Route::post('register', [RegisteredUserController::class, 'store']);
 
 // ✅ Admin-only routes
-Route::middleware(['auth', 'cekrole:admin'])->group(function () {
+Route::middleware(['auth', 'cekrole:admin,superadmin'])->group(function () {
     Route::get('/admin', function () {
         $response = Http::get('https://api.oase.poltektegal.ac.id/api/web/mahasiswa', [
             'key' => env('OASE_API_KEY'),

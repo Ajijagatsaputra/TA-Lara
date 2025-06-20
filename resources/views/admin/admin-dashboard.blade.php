@@ -1,3 +1,11 @@
+@php
+    $userRole = Auth::user()->role;
+@endphp
+
+<!-- TOMBOL HANYA UNTUK ADMIN -->
+@if($userRole === 'admin')
+    <a href="{{ route('tracer.index') }}" class="btn btn-primary">✏️ Edit Data Tracer Alumni</a>
+@endif
 <!doctype html>
 <html lang="id">
   @include('components.admin.head')

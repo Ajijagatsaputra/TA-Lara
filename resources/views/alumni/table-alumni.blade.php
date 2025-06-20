@@ -1,6 +1,4 @@
-<!-- Data Alumni Page -->
 
-<!-- ... HEAD & HEADER COMPONENTS ... -->
 @include('components.admin.head')
 
 <body>

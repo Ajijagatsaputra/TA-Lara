@@ -32,6 +32,12 @@ class DumyUserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'role' => 'alumni',
             ],
+            [
+                'username' => 'superadmin',
+                'email' => 'superadmin@gmail.com',
+                'password' => bcrypt('12345678'),
+                'role' => 'superadmin',
+            ],
             
         ];
 
