@@ -51,17 +51,12 @@
 
           {{-- Overview Boxes --}}
           <div class="row items-push">
-            {{-- @foreach ([
-              ['label' => 'Dosen', 'jumlah' => 32, 'icon' => 'fas fa-chalkboard-teacher', 'link' => '/listdosen'],
-              ['label' => 'Mahasiswa', 'jumlah' => $count ?? 0 , 'icon' => 'far fa-user-circle', 'link' => '/listmahasiswa'],
-              ['label' => 'Alumni', 'jumlah' => $count ?? 0, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni'],
-            ] as $item) --}}
             @foreach([
               ['label' => 'Mahasiswa', 'jumlah' => $countMahasiswa, 'icon' => 'fas fa-chalkboard-teacher', 'link' => '/listmahasiswa'],
               ['label' => 'Dosen', 'jumlah' => $countDosen, 'icon' => 'far fa-user-circle', 'link' => '/listdosen'],
-              ['label' => 'Alumni', 'jumlah' => $countAlumni, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni']  
+              ['label' => 'Alumni', 'jumlah' => $countAlumni, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni']
             ] as $item)
-            
+
               <div class="col-sm-6 col-xxl-3">
                 <div class="block block-rounded d-flex flex-column h-100">
                   <div class="block-content block-content-full d-flex justify-content-between align-items-center">
@@ -111,9 +106,8 @@
                     @foreach ([
                       ['label' => 'Bekerja', 'value' => $statistikAlumni['Bekerja'], 'icon' => 'fa-caret-up', 'color' => 'success'],
                       ['label' => 'Belum Bekerja', 'value' => $statistikAlumni['Belum Bekerja'], 'icon' => 'fa-caret-down', 'color' => 'danger'],
-                      ['label' => 'Wirausaha', 'value' => $statistikAlumni['Wirausaha'], 'icon' => 'fa-caret-up', 'color' => 'warning'],
                     ] as $stat)
-                    
+
                       <div class="col-sm-4">
                         <dl class="mb-0">
                           <dt class="fs-3 fw-bold d-inline-flex align-items-center">

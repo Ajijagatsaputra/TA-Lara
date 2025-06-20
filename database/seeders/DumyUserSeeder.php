@@ -21,18 +21,17 @@ class DumyUserSeeder extends Seeder
                 'role' => 'admin',
             ],
             [
+                'username' => 'superadmin',
+                'email' => 'superadmin@gmail.com',
+                'password' => bcrypt('password'),
+                'role' => 'superadmin',
+            ],
+            [
                 'username' => 'alumni',
                 'email' => 'alumni@gmail.com',
                 'password' => bcrypt('password'),
                 'role' => 'alumni',
             ],
-            [
-                'username' => 'irfan',
-                'email' => 'irfankntl@gmail.com',
-                'password' => bcrypt('12345678'),
-                'role' => 'alumni',
-            ],
-            
         ];
 
         foreach ($userData as $user)

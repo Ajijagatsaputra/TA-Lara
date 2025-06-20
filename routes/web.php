@@ -37,7 +37,7 @@ Route::get('/', function () {
         }
 
 
-        // 3. Dosen berdasarkan kd_prodi dan kode_tahun_akademik
+        //Dosen berdasarkan kd_prodi dan kode_tahun_akademik
         $kodeProdi = '09';
         $tahunAkademikList = ['20201', '20211', '20221', '20231', '20241', '20251'];
 
